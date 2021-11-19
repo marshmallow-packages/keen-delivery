@@ -351,9 +351,29 @@ The tables below show which carries and which services are currently supported b
 | --- | --------------- |
 | 48N | Economy Express |
 
----
+## Testing
 
-Copyright (c) 2021 marshmallow.
+```bash
+composer test
+```
+
+## Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+
+## Contributing
+
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+
+## Security
+
+If you discover any security related issues, please email stef@marshmallow.dev instead of using the issue tracker.
+
+## Credits
+
+-   [Stef van Esch](https://github.com/stefvanesch)
+-   [Marshmallow](https://github.com/marshmallow-packages)
+-   [All Contributors](../../contributors)
 
 ## License
 
@@ -362,3 +382,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 ## Resources
 
 API documentation: https://keendelivery.readthedocs.io/en/latest/
+
+---
+
+Copyright (c) 2021 marshmallow.
