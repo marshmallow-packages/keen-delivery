@@ -2,8 +2,8 @@
 
 # Laravel Keen Delivery
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/marshmallow/keen-delivery.svg)](https://github.com/marshmallow-packages/keen-delivery)
-[![Total Downloads](https://img.shields.io/packagist/dt/marshmallow/keen-delivery.svg)](https://github.com/marshmallow-packages/keen-delivery)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/marshmallow/keen-delivery.svg?v=1)](https://github.com/marshmallow-packages/keen-delivery)
+[![Total Downloads](https://img.shields.io/packagist/dt/marshmallow/keen-delivery.svg?v=1)](https://github.com/marshmallow-packages/keen-delivery)
 [![Issues](https://img.shields.io/github/issues/marshmallow-packages/keen-delivery)](https://github.com/marshmallow-packages/keen-delivery)
 [![Stars](https://img.shields.io/github/stars/marshmallow-packages/keen-delivery)](https://github.com/marshmallow-packages/keen-delivery)
 [![Forks](https://img.shields.io/github/forks/marshmallow-packages/keen-delivery)](https://github.com/marshmallow-packages/keen-delivery)
