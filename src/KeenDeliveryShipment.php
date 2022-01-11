@@ -2,6 +2,7 @@
 
 namespace Marshmallow\KeenDelivery;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Marshmallow\KeenDelivery\KeenDelivery;
 use Marshmallow\KeenDelivery\Facades\KeenDeliveryApi;
@@ -139,7 +140,7 @@ class KeenDeliveryShipment
 
     public function companyName(string $company_name = null): self
     {
-        $this->company_name = $company_name;
+        $this->company_name = Str::limit($company_name, 35, '');
         return $this;
     }
 
