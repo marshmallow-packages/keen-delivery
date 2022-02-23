@@ -3,6 +3,7 @@
 namespace Marshmallow\KeenDelivery;
 
 use Illuminate\Support\Facades\Http;
+use Marshmallow\KeenDelivery\Events\ShipmentCreated;
 
 class KeenDeliveryApi
 {
@@ -62,5 +63,11 @@ class KeenDeliveryApi
         $model->update([
             'response' => $response,
         ]);
+
+        event(
+            new ShipmentCreated(
+                $model->fresh()
+            )
+        );
     }
 }

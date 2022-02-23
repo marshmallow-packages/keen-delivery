@@ -183,6 +183,14 @@ After you have done this, you can create your shipping labels like so:
 $order->createShipment()
 ```
 
+### Events
+
+This package will trigger event on some actions. Below you will find an overview of the events that you can hook in to.
+
+| Event                                            | When                                                        | Variable    |
+| ------------------------------------------------ | ----------------------------------------------------------- | ----------- |
+| \Marshmallow\KeenDelivery\Events\ShipmentCreated | This will be triggered everytime a new shipment is created. | `$delivery` |
+
 ## Use in Laravel Nova
 
 If you want to use this package in Nova, you must start by publishing the Nova Resource. This can be done by running the command below. This command will create the file `app\Nova\Delivery.php` if it does not already exist.
