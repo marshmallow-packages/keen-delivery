@@ -14,6 +14,7 @@ use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Textarea;
 
 class Delivery extends Resource
@@ -124,12 +125,12 @@ class Delivery extends Resource
         ];
     }
 
-    public static function authorizedToCreate(NovaRequest $request)
+    public static function authorizedToCreate(Request $request)
     {
         return false;
     }
 
-    public function authorizedToUpdate(NovaRequest $request)
+    public function authorizedToUpdate(Request $request)
     {
         return false;
     }
