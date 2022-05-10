@@ -9,16 +9,15 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Line;
 use Laravel\Nova\Fields\Text;
-use Eminiarts\Tabs\TabsOnEdit;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Textarea;
 
 class Delivery extends Resource
 {
-    use TabsOnEdit;
 
     public static $model = 'Marshmallow\KeenDelivery\Models\Delivery';
 
@@ -56,7 +55,7 @@ class Delivery extends Resource
      *
      * @return array Array of fields
      */
-    public function fields(Request $request)
+    public function fields(NovaRequest $request)
     {
         return [
             new Tabs(__('Delivery'), [
@@ -125,12 +124,12 @@ class Delivery extends Resource
         ];
     }
 
-    public static function authorizedToCreate(Request $request)
+    public static function authorizedToCreate(NovaRequest $request)
     {
         return false;
     }
 
-    public function authorizedToUpdate(Request $request)
+    public function authorizedToUpdate(NovaRequest $request)
     {
         return false;
     }
@@ -139,11 +138,11 @@ class Delivery extends Resource
      * Cards for this resource. Extended by the cards
      * that are default by the package
      *
-     * @param Request $request Request object
+     * @param NovaRequest $request NovaRequest object
      *
      * @return array Array of cards
      */
-    public function cards(Request $request)
+    public function cards(NovaRequest $request)
     {
         return [];
     }
@@ -153,11 +152,11 @@ class Delivery extends Resource
      * Filters for this resource. Extended by the filters
      * that are default by the package
      *
-     * @param Request $request Request object
+     * @param NovaRequest $request NovaRequest object
      *
      * @return array Array of filters
      */
-    public function filters(Request $request)
+    public function filters(NovaRequest $request)
     {
         return [];
     }
@@ -167,11 +166,11 @@ class Delivery extends Resource
      * Lenses for this resource. Extended by the lenses
      * that are default by the package
      *
-     * @param Request $request Request object
+     * @param NovaRequest $request NovaRequest object
      *
      * @return array Array of lenses
      */
-    public function lenses(Request $request)
+    public function lenses(NovaRequest $request)
     {
         return [];
     }
@@ -181,11 +180,11 @@ class Delivery extends Resource
      * Actions for this resource. Extended by the actions
      * that are default by the package
      *
-     * @param Request $request Request object
+     * @param NovaRequest $request NovaRequest object
      *
      * @return array Array of actions
      */
-    public function actions(Request $request)
+    public function actions(NovaRequest $request)
     {
         return [];
     }

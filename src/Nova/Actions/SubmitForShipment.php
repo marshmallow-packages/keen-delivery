@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Laravel\Nova\Actions\Action;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\ActionFields;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Queue\InteractsWithQueue;
 
 class SubmitForShipment extends Action
