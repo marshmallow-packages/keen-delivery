@@ -4,6 +4,7 @@ namespace Marshmallow\KeenDelivery\Nova\Filters;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ShipmentNotifiedFilter extends Filter
 {
@@ -22,12 +23,12 @@ class ShipmentNotifiedFilter extends Filter
     /**
      * Apply the filter to the given query.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function apply(Request $request, $query, $value)
+    public function apply(NovaRequest $request, $query, $value)
     {
         return match ($value) {
             'submitted' => $query->shipmentSubmitted(),
@@ -39,10 +40,10 @@ class ShipmentNotifiedFilter extends Filter
     /**
      * Get the filter's available options.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function options(Request $request)
+    public function options(NovaRequest $request)
     {
         return [
             __('Submitted') => 'submitted',
