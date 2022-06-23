@@ -5,7 +5,6 @@ namespace Marshmallow\KeenDelivery\Nova;
 use App\Nova\Resource;
 use Eminiarts\Tabs\Tabs;
 use Laravel\Nova\Fields\ID;
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Line;
 use Laravel\Nova\Fields\Text;
