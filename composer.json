@@ -25,7 +25,7 @@
         "php": "^8.0",
         "marshmallow/helpers": "^v2.12.1",
         "marshmallow/commands": "^v1.2.1",
-        "eminiarts/nova-tabs": "^2.0.3",
+        "marshmallow/nova-tabs": "^2.0.3",
         "laravel/nova": "^4.0"
     },
     "autoload": {
