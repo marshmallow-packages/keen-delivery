@@ -61,6 +61,21 @@ class Delivery extends Model
         $builder->whereNull('label_encoded');
     }
 
+    public function scopeLegacy(Builder $builder)
+    {
+        $builder->where('carrier_shipping_id', 'regexp', '^[0-9]+$');
+    }
+
+    public function scopeSendy(Builder $builder)
+    {
+        $builder->whereNot('carrier_shipping_id', 'regexp', '^[0-9]+$');
+    }
+
+    public function getIsLegacyAttribute()
+    {
+        return is_numeric($this->carrier_shipping_id);
+    }
+
     public function deliverable()
     {
         return $this->morphTo();

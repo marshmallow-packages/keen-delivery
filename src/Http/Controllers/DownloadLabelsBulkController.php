@@ -19,22 +19,14 @@ class DownloadLabelsBulkController extends Controller
         $class = $bulk_data->class;
         $models = $class::whereIn('id', $bulk_data->ids)->get();
 
-        $delivery_ids = [];
-
         foreach ($models as $model) {
-            $delivery_ids[] = $model->getDeliverableWithLabel()->carrier_shipping_id;
-        }
-
-        $legacy_ids = [];
-        $sendy_ids = [];
-
-        collect($delivery_ids)->each(function ($delivery_id) use (&$legacy_ids, &$sendy_ids) {
-            if (is_numeric($delivery_id)) {
-                $legacy_ids[] = $delivery_id;
+            $deliverable_with_label = $model->getDeliverableWithLabel();
+            if ($deliverable_with_label->is_legacy) {
+                $legacy_ids[] = $deliverable_with_label->carrier_shipping_id;
             } else {
-                $sendy_ids[] = $delivery_id;
+                $sendy_ids[] = $deliverable_with_label->carrier_shipping_id;
             }
-        });
+        }
 
         if ($legacy && count($legacy_ids) > 0) {
             return $this->getLegacyLabels($legacy_ids);
