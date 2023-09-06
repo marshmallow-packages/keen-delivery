@@ -41,7 +41,7 @@ class KeenDeliveryApi
 
     public function createShipment(KeenDeliveryShipment $shipment)
     {
-        $response = $this->post('/shipment', $shipment->toArray());
+        $response = $this->post('/shipment', $shipment->toLegacyArray());
 
         $model = $shipment->createDeliveryableRecord();
 

@@ -26,6 +26,7 @@
         "marshmallow/helpers": "^v2.12.1",
         "marshmallow/commands": "^v1.2.1",
         "marshmallow/nova-tabs": "^2.0.3",
+        "sendynl/php-sdk": "^1.0",
         "laravel/nova": "^4.0"
     },
     "autoload": {
