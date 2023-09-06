@@ -120,6 +120,7 @@ class SendyApi
         $shipmentResponse = $this->postShipment($shipmentData);
         $shipmentId = Arr::get($shipmentResponse, 'uuid');
 
+        // Generate Track & Trace
         $generatedResponse = $this->generateShipment($shipmentId);
 
         $model = $shipment->createDeliveryableRecord();
@@ -134,6 +135,7 @@ class SendyApi
         if ($shipmentId && $packages) {
             $package = collect($packages)->first();
 
+            // Create Label
             $labelResponse = $this->getLabel($shipmentId);
             $label = Arr::get($labelResponse, 'labels');
 
