@@ -51,6 +51,19 @@ php artisan vendor:publish --provider="Marshmallow\KeenDelivery\ServiceProvider"
 
 ### Update your .env
 
+Add your Sendy Access Token token to your `.env` file. And add the Sendy shop UUiD.
+
+```env
+SENDY_ACCESS_TOKEN="*****"
+SENDY_SHOP_ID="*****"
+```
+
+To enable the old Keen Delivery API set the following variable to true.
+
+```env
+KEEN_DELIVERY_LEGACY_ENABLED=true
+```
+
 Add your Keen Delivery API token to your `.env` file. You can also add this to your config but this is not advised.
 
 ```env
@@ -293,6 +306,24 @@ use Marshmallow\KeenDelivery\Facades\KeenDeliveryApi;
 
 KeenDeliveryApi::verifyApiToken();
 KeenDeliveryApi::listShippingMethods();
+```
+
+## Sendy Api
+
+The following API methods are useful for the setup of this package. With the `me` you can check if you actually have a working connection with the Keen Deliver API and with `listShippingMethods` you can see which shipping methods are available to you. You can also use the 'shops' method to get all the shops that are connected to your account. Or use the `getShopUuid` to get the UUID of the first shop.
+
+```php
+use Marshmallow\KeenDelivery\Facades\SendyApi;
+
+SendyApi::me();
+SendyApi::getShopUuid();
+SendyApi::listShops();
+SendyApi::getShippingPreference();
+SendyApi::listShippingPreferences();
+SendyApi::listCarriers();
+SendyApi::listShippingMethods();
+SendyApi::listServices($carrierId);
+SendyApi::getShipment($shipmentId);
 ```
 
 ## Carriers
