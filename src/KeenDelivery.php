@@ -36,20 +36,24 @@ class KeenDelivery
         return $carrier;
     }
 
-    public function getBulkDownloadPath(Collection $models)
+    public function getBulkDownloadPath(Collection $models, $legacy = false)
     {
         $bulk_data = base64_encode(json_encode([
             'class' => get_class($models->first()),
             'ids' => $models->pluck('id')->toArray(),
+            'legacy' => $legacy
         ]));
 
-        return URL::temporarySignedRoute(
+        $url = URL::temporarySignedRoute(
             config('keen-delivery.routes.bulk_labels.name'),
             now()->addMinutes(
                 config('keen-delivery.routes.bulk_labels.ttl')
             ),
-            ['bulk_data' => $bulk_data]
+            [
+                'bulk_data' => $bulk_data,
+            ]
         );
+        return $url;
     }
 
     public function shipmentInfoField()

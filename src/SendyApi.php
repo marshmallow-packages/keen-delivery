@@ -99,6 +99,11 @@ class SendyApi
         return $this->client->shipment->labels($shipmentId);
     }
 
+    public function getLabels(array $shipmentIds)
+    {
+        return $this->client->label->get($shipmentIds);
+    }
+
     public function createShipmentFromPreference(array $shipmentData, $preferenceId, $generateDirectly = false)
     {
         collect([

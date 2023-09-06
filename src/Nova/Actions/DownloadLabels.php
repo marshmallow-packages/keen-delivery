@@ -4,6 +4,7 @@ namespace Marshmallow\KeenDelivery\Nova\Actions;
 
 use Illuminate\Bus\Queueable;
 use Laravel\Nova\Actions\Action;
+use Laravel\Nova\Fields\Boolean;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\ActionFields;
 use Illuminate\Queue\InteractsWithQueue;
@@ -28,8 +29,18 @@ class DownloadLabels extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        $download_path = KeenDelivery::getBulkDownloadPath($models);
+        $legacy = $fields->legacy ?? false;
+
+        ray($legacy, $fields);
+        $download_path = KeenDelivery::getBulkDownloadPath($models, $legacy);
 
         return Action::download($download_path, 'shipment-labels.pdf');
+    }
+
+    public function fields(NovaRequest $request)
+    {
+        return [
+            Boolean::make(__('Download legacy labels'), 'legacy')->default(false),
+        ];
     }
 }
