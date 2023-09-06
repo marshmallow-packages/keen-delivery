@@ -120,7 +120,7 @@ class SendyApi
         $shipmentResponse = $this->postShipment($shipmentData);
         $shipmentId = Arr::get($shipmentResponse, 'uuid');
 
-        $this->generateShipment($shipmentId);
+        $generatedResponse = $this->generateShipment($shipmentId);
 
         $model = $shipment->createDeliveryableRecord();
 
@@ -131,15 +131,17 @@ class SendyApi
             $packages = Arr::get($shipmentResponse, 'packages');
         }
 
-
         if ($shipmentId && $packages) {
             $package = collect($packages)->first();
+
+            $labelResponse = $this->getLabel($shipmentId);
+            $label = Arr::get($labelResponse, 'labels');
 
             $model->update([
                 'carrier_shipping_id' => $shipmentId,
                 'track_and_trace_id' => Arr::get($package, 'package_number'),
                 'track_and_trace_url' => Arr::get($package, 'tracking_url'),
-                'label_encoded' =>  $label ?? null,
+                'label_encoded' =>  $label,
             ]);
         }
 
