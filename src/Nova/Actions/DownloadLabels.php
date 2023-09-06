@@ -30,8 +30,6 @@ class DownloadLabels extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         $legacy = $fields->legacy ?? false;
-
-        ray($legacy, $fields);
         $download_path = KeenDelivery::getBulkDownloadPath($models, $legacy);
 
         return Action::download($download_path, 'shipment-labels.pdf');
