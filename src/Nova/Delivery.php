@@ -3,7 +3,8 @@
 namespace Marshmallow\KeenDelivery\Nova;
 
 use App\Nova\Resource;
-use Eminiarts\Tabs\Tabs;
+use Laravel\Nova\Tabs;
+use Laravel\Nova\Tabs\Tab;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Line;
@@ -58,8 +59,8 @@ class Delivery extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            new Tabs(__('Delivery'), [
-                __('Shipment') => [
+            (Tab::group('Tabs', [
+                Tab::make(__('Shipment'), [
                     ID::make()->sortable(),
                     MorphTo::make('deliverable')->types(
                         config('keen-delivery.delivery_models')
@@ -91,26 +92,26 @@ class Delivery extends Resource
                     Text::make(__('Weight'), 'weight')->hideFromIndex(),
                     Text::make(__('Reference'), 'reference')->hideFromIndex(),
                     DateTime::make(__('Created'), 'created_at'),
-                ],
-                __('Person') => [
+                ]),
+                Tab::make(__('Person'), [
                     Text::make(__('Company'), 'company_name')->hideFromIndex(),
                     Text::make(__('Person'), 'contact_person')->hideFromIndex(),
                     Text::make(__('Phone'), 'phone')->hideFromIndex(),
                     Text::make(__('Email'), 'email')->hideFromIndex(),
-                ],
-                __('Address') => [
+                ]),
+                Tab::make(__('Address'), [
                     Text::make(__('Street'), 'street')->hideFromIndex(),
                     Text::make(__('Number'), 'number')->hideFromIndex(),
                     Text::make(__('Number addition'), 'number_addition')->hideFromIndex(),
                     Text::make(__('Zip code'), 'zip_code')->hideFromIndex(),
                     Text::make(__('City'), 'city')->hideFromIndex(),
                     Text::make(__('Country'), 'country')->hideFromIndex(),
-                ],
-                __('Extra data') => [
+                ]),
+                Tab::make(__('Extra data'), [
                     Code::make(__('Extra data'), 'extra_data')->json(),
                     Textarea::make(__('Comment'), 'comment')->hideFromIndex(),
-                ],
-                __('Request') => [
+                ]),
+                Tab::make(__('Request'), [
                     Code::make(__('Payload'), 'payload')->json(),
                     Code::make(__('Response'), 'response')->json(),
                     Badge::make('Status')->map([
@@ -119,8 +120,8 @@ class Delivery extends Resource
                     ])->resolveUsing(function ($value, $delivery) {
                         return $delivery->getNovaStatus();
                     }),
-                ],
-            ]),
+                ]),
+            ]))->withToolbar(),
         ];
     }
 
