@@ -40,6 +40,9 @@ php artisan vendor:publish --provider="Marshmallow\KeenDelivery\ServiceProvider"
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | api_path                | This is the base path of the Keen Delivery API.                                                                                                                                                                                       |
 | api_token               | This will load your API key from you `.env` file                                                                                                                                                                                      |
+| use_legacy              | Enables the legacy Keen Delivery API instead of the Sendy API. Loaded from the `KEEN_DELIVERY_LEGACY_ENABLED` env variable (defaults to `false`).                                                                                       |
+| sendy_token             | Your Sendy access token, loaded from the `SENDY_ACCESS_TOKEN` env variable.                                                                                                                                                            |
+| sendy_shop_id           | Your Sendy shop UUID, loaded from the `SENDY_SHOP_ID` env variable.                                                                                                                                                                    |
 | default_carrier         | This will hold the default carrier you wish to use. You can also provide this manually when creating a shipment. Please reference the Carriers table at the bottom of this README file to see which carries are currently supported.  |
 | default_carrier_service | This will hold the default service you wish to use. You can also provide this manually when creating a shipment. Please reference the Carriers table at the bottom of this README file to see which services are currently supported. |
 | delivery_models         | Add any Nova Resource that should be able to be shipped to this array. By default we will add `App\Nova\Order` because this is most common in our own projects                                                                        |
@@ -392,8 +395,10 @@ The tables below show which carries and which services are currently supported b
 
 ## Testing
 
+This package is linted on every push and pull request via the [PHP Syntax Checker workflow](.github/workflows/php-syntax-checker.yml). You can run the same syntax check locally:
+
 ```bash
-composer test
+find src -name "*.php" -print0 | xargs -0 -n1 php -l
 ```
 
 ## Changelog
