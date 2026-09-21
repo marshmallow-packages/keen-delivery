@@ -3,6 +3,7 @@
 namespace Marshmallow\KeenDelivery;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Marshmallow\KeenDelivery\Console\SendcloudSetupCommand;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -29,6 +30,12 @@ class ServiceProvider extends BaseServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/routes.php');
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                SendcloudSetupCommand::class,
+            ]);
+        }
 
         $this->publishes([
             __DIR__ . '/../config/keen-delivery.php' => config_path('keen-delivery.php'),
