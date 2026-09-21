@@ -43,6 +43,8 @@ php artisan vendor:publish --provider="Marshmallow\KeenDelivery\ServiceProvider"
 | use_legacy              | Enables the legacy Keen Delivery API instead of the Sendy API. Loaded from the `KEEN_DELIVERY_LEGACY_ENABLED` env variable (defaults to `false`).                                                                                       |
 | sendy_token             | Your Sendy access token, loaded from the `SENDY_ACCESS_TOKEN` env variable.                                                                                                                                                            |
 | sendy_shop_id           | Your Sendy shop UUID, loaded from the `SENDY_SHOP_ID` env variable.                                                                                                                                                                    |
+| driver                  | The API new shipments are created with: `keen`, `sendy` or `sendcloud`. Loaded from `KEEN_DELIVERY_DRIVER`. When empty, `use_legacy` decides between `keen` and `sendy`.                                                                |
+| sendcloud.\*            | Sendcloud API keys (`SENDCLOUD_PUBLIC_KEY`, `SENDCLOUD_SECRET_KEY`), the sender address id (`SENDCLOUD_SENDER_ADDRESS_ID`), an optional contract id (`SENDCLOUD_CONTRACT_ID`) and `shipping_options`, which maps your service codes to Sendcloud shipping option codes. |
 | default_carrier         | This will hold the default carrier you wish to use. You can also provide this manually when creating a shipment. Please reference the Carriers table at the bottom of this README file to see which carries are currently supported.  |
 | default_carrier_service | This will hold the default service you wish to use. You can also provide this manually when creating a shipment. Please reference the Carriers table at the bottom of this README file to see which services are currently supported. |
 | delivery_models         | Add any Nova Resource that should be able to be shipped to this array. By default we will add `App\Nova\Order` because this is most common in our own projects                                                                        |
@@ -60,6 +62,17 @@ Add your Sendy Access Token token to your `.env` file. And add the Sendy shop UU
 SENDY_ACCESS_TOKEN="*****"
 SENDY_SHOP_ID="*****"
 ```
+
+To use Sendcloud, set the driver and add the API keys of your Sendcloud account (Settings > Integrations > Sendcloud API).
+
+```env
+KEEN_DELIVERY_DRIVER=sendcloud
+SENDCLOUD_PUBLIC_KEY="*****"
+SENDCLOUD_SECRET_KEY="*****"
+SENDCLOUD_SENDER_ADDRESS_ID=12345
+```
+
+Then run `php artisan keen-delivery:sendcloud-setup` to list your sender addresses and shipping option codes, and map every service you ship with in `keen-delivery.sendcloud.shipping_options` (for example `'DOMESTIC_PACKAGE' => 'postnl:standard'`).
 
 To enable the old Keen Delivery API set the following variable to true.
 
@@ -327,6 +340,18 @@ SendyApi::listCarriers();
 SendyApi::listShippingMethods();
 SendyApi::listServices($carrierId);
 SendyApi::getShipment($shipmentId);
+```
+
+## Sendcloud Api
+
+Shipments are created and announced synchronously through the Sendcloud v3 API. One parcel is announced per package (`amount`), and the label PDF of all parcels is stored on the delivery. Bulk label downloads are merged by Sendcloud, with a maximum of 20 parcels per download.
+
+```php
+use Marshmallow\KeenDelivery\Facades\SendcloudApi;
+
+SendcloudApi::listSenderAddresses();
+SendcloudApi::listShippingOptions(['to_address' => ['country_code' => 'NL']]);
+SendcloudApi::getLabels([$parcelId]);
 ```
 
 ## Carriers

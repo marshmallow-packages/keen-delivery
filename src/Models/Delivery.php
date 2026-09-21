@@ -2,6 +2,7 @@
 
 namespace Marshmallow\KeenDelivery\Models;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -74,6 +75,20 @@ class Delivery extends Model
     public function getIsLegacyAttribute()
     {
         return is_numeric($this->carrier_shipping_id);
+    }
+
+    public function getIsSendcloudAttribute(): bool
+    {
+        return Arr::has($this->payload ?? [], 'ship_with');
+    }
+
+    /** @return array<int, int> */
+    public function getSendcloudParcelIds(): array
+    {
+        return collect(Arr::get($this->response ?? [], 'parcels', []))
+            ->pluck('id')
+            ->map(fn ($parcelId) => (int) $parcelId)
+            ->all();
     }
 
     public function deliverable()

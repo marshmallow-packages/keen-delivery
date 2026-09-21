@@ -14,6 +14,28 @@ return [
     'sendy_token' => env('SENDY_ACCESS_TOKEN', null),
     'sendy_shop_id' => env('SENDY_SHOP_ID', null),
 
+    /*
+     * Which API new shipments are created with: 'keen', 'sendy' or 'sendcloud'.
+     * When empty, use_legacy decides between 'keen' and 'sendy'.
+     */
+    'driver' => env('KEEN_DELIVERY_DRIVER'),
+
+    'sendcloud' => [
+        'api_path' => 'https://panel.sendcloud.sc/api',
+        'public_key' => env('SENDCLOUD_PUBLIC_KEY'),
+        'secret_key' => env('SENDCLOUD_SECRET_KEY'),
+        'sender_address_id' => env('SENDCLOUD_SENDER_ADDRESS_ID'),
+        'contract_id' => env('SENDCLOUD_CONTRACT_ID'),
+
+        /*
+         * Maps the service stored on a shipment to a Sendcloud shipping option code.
+         * Run `php artisan keen-delivery:sendcloud-setup` to list the codes of your account.
+         */
+        'shipping_options' => [
+            // 'DOMESTIC_PACKAGE' => 'postnl:standard',
+        ],
+    ],
+
     'default_carrier' => DPD::class,
 
     'default_carrier_service' => 'DPD_HOME_PICK_UP',
