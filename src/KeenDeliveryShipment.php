@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Marshmallow\KeenDelivery\KeenDelivery;
 use Marshmallow\KeenDelivery\Facades\KeenDeliveryApi;
 use Marshmallow\KeenDelivery\Facades\SendyApi;
+use Marshmallow\KeenDelivery\Facades\SendcloudApi;
+use Marshmallow\KeenDelivery\Exceptions\SendcloudException;
 use Marshmallow\KeenDelivery\Contracts\ParcelCarriers;
 
 class KeenDeliveryShipment
@@ -76,6 +78,54 @@ class KeenDeliveryShipment
         return $data;
     }
 
+    public function toSendcloudArray(): array
+    {
+        $shippingOptionCode = config("keen-delivery.sendcloud.shipping_options.{$this->service}");
+
+        if (! $shippingOptionCode) {
+            throw SendcloudException::unmappedService((string) $this->service);
+        }
+
+        $shipWith = array_filter([
+            'shipping_option_code' => $shippingOptionCode,
+            'contract_id' => config('keen-delivery.sendcloud.contract_id'),
+        ]);
+
+        $amount = max(1, (int) $this->amount);
+        $parcel = [
+            'weight' => [
+                'value' => number_format((float) ($this->weight ?: 1), 3, '.', ''),
+                'unit' => 'kg',
+            ],
+        ];
+
+        return [
+            'to_address' => array_filter([
+                'name' => $this->contact_person ?: $this->company_name,
+                'company_name' => $this->company_name,
+                'address_line_1' => $this->street_line_1,
+                'house_number' => trim("{$this->number_line_1} {$this->number_line_1_addition}"),
+                'postal_code' => $this->zip_code,
+                'city' => $this->city,
+                'country_code' => $this->country,
+                'phone_number' => $this->phone,
+                'email' => $this->email,
+            ]),
+            'from_address' => [
+                'sender_address_id' => (int) config('keen-delivery.sendcloud.sender_address_id'),
+            ],
+            'ship_with' => [
+                'type' => 'shipping_option_code',
+                'properties' => $shipWith,
+            ],
+            'reference' => $this->reference,
+            'parcels' => array_fill(0, $amount, $parcel),
+            'label_details' => [
+                'mime_type' => 'application/pdf',
+            ],
+        ];
+    }
+
     public function toLegacyArray(): array
     {
         $data = [
@@ -129,12 +179,12 @@ class KeenDeliveryShipment
             'comment' => $this->comment,
             'weight' => $this->weight,
             'extra_data' => $this->custom_data,
-            'payload' => $this->toArray(),
+            'payload' => match (KeenDelivery::driver()) {
+                'keen' => $this->toLegacyArray(),
+                'sendcloud' => $this->toSendcloudArray(),
+                default => $this->toArray(),
+            },
         ];
-
-        if (config('keen-delivery.use_legacy')) {
-            $data['payload'] = $this->toLegacyArray();
-        }
 
         return KeenDelivery::$deliveryModel::create($data);
     }
@@ -146,10 +196,11 @@ class KeenDeliveryShipment
 
     public function create()
     {
-        if (config('keen-delivery.use_legacy')) {
-            return KeenDeliveryApi::createShipment($this);
-        }
-        return SendyApi::createShipment($this);
+        return match (KeenDelivery::driver()) {
+            'keen' => KeenDeliveryApi::createShipment($this),
+            'sendcloud' => SendcloudApi::createShipment($this),
+            default => SendyApi::createShipment($this),
+        };
     }
 
     public function of(Model $deliverable)

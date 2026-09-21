@@ -15,6 +15,19 @@ class KeenDelivery
 {
     public static $deliveryModel = Delivery::class;
 
+    /**
+     * The API that new shipments are created with: 'keen', 'sendy' or 'sendcloud'.
+     * Falls back to the older use_legacy flag when no driver is configured.
+     */
+    public static function driver(): string
+    {
+        if ($driver = config('keen-delivery.driver')) {
+            return $driver;
+        }
+
+        return config('keen-delivery.use_legacy') ? 'keen' : 'sendy';
+    }
+
     public function getCarrier(string $carrier = null)
     {
         try {
