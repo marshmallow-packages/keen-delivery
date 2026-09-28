@@ -99,9 +99,13 @@ class SendyApi
         return $this->client->shipment->labels($shipmentId);
     }
 
+    /**
+     * The paper type and start location are passed explicitly: sendynl/php-sdk
+     * v1 defaulted them to A6 / top-left, v3 leaves them to Sendy's default.
+     */
     public function getLabels(array $shipmentIds)
     {
-        return $this->client->label->get($shipmentIds);
+        return $this->client->label->get($shipmentIds, 'A6', 'top-left');
     }
 
     public function createShipmentFromPreference(array $shipmentData, $preferenceId, $generateDirectly = false)
