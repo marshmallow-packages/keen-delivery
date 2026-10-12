@@ -2,11 +2,11 @@
 
 All notable changes to `keen-delivery` will be documented in this file
 
-## 3.1.1 - unreleased
+## 3.1.1 - 2026-09-28
 
 -   Keep bulk Sendy labels on A6 / top-left with sendynl/php-sdk v3, which no longer defaults the paper type
 
-## 3.1.0 - unreleased
+## 3.1.0 - 2026-09-21
 
 -   Add a Sendcloud driver (`KEEN_DELIVERY_DRIVER=sendcloud`) next to Sendy and the legacy Keen Delivery API
 -   Add the `keen-delivery:sendcloud-setup` command to list Sendcloud sender addresses and shipping option codes
